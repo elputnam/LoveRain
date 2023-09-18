@@ -17,6 +17,14 @@ let cols = 3;
 let rows = 3;
 let w, h;
 
+//CCapture
+// var capture = false; // default is to not capture frames, can be changed with button in browser
+var capturer = new CCapture({
+  format:'webm', 
+  workersPath: 'js/',
+  framerate: 6
+});
+
 
 function preload(){
   base = loadImage("assets/LoveRain_base.png");
@@ -50,6 +58,7 @@ function setup() {
 }
 
 function draw() {
+  if (frameCount==1) capturer.start();
   background(colour, 100, 100);
 
   //base
@@ -113,6 +122,12 @@ function draw() {
   if (frameCount%3==0){
     colour = random(180);
   }
+
+  capturer.capture(document.getElementById('defaultCanvas0'));  
+    if (frameCount==1800){
+      save_record();
+    }
+    print(frameCount);
 }
 class Shadow{
   constructor(x, y, xInc, yInc, tint1, inc, silImg){
@@ -162,4 +177,8 @@ class Shadow{
     pop();
     
   }
+}
+
+function save_record() {
+  capturer.save();
 }
